@@ -1,0 +1,40 @@
+li.social {
+  padding: 0;
+  margin: 0;
+}
+
+li.social>a:hover {
+  color: #ffffff;
+}
+
+li.social>a {
+  color: #eeeeee;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+  text-align: center;
+}
+
+li.social>a.facebook:active,
+li.social>a.facebook:hover,
+a.facebook {
+  background-color: #36549E;
+}
+
+li.social>a.google:active,
+li.social>a.google:hover,
+a.google {
+  background-color: #F23014;
+}
+
+li.social>a.linkedin:active,
+li.social>a.linkedin:hover,
+a.linkedin {
+  background-color: #0079BD;
+}
+
+li.social>a.twitter:active,
+li.social>a.twitter:hover,
+a.twitter {
+  background-color: #00ACF6;
+}

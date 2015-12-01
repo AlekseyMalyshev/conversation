@@ -1,0 +1,61 @@
+doctype html
+html(lang='en' ng-app='Conversation')
+  head
+    title Super Conversation
+    link(href='/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+    link(href='/font-awesome/css/font-awesome.min.css', rel='stylesheet')
+    link(href='/css/styles.css', rel='stylesheet')
+    script(src='/angular/angular.min.js', type='text/javascript')
+    script(src='/angular-ui-router/release/angular-ui-router.min.js', type='text/javascript')
+  body
+    nav.navbar.navbar-default(ng-controller='navBar')
+      .container-fluid
+        .navbar-header
+          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='false')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(ui-sref='profile')
+            i(class='fa fa-user-secret')
+
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li
+              a(ui-sref='users') Users
+            li
+              a(ui-sref='conversations') Conversations
+          ul.nav.navbar-nav.navbar-right
+            li
+              a(ui-sref='logout') Logout
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
+                | Sign in with 
+                span.caret
+              ul.dropdown-menu
+                li.social
+                  a.facebook(href='#' ng-click='authenticate(\'facebook\')')
+                    i.fa.fa-facebook
+                    | &nbsp;Facebook
+                li.social
+                  a.google(href='#' ng-click='authenticate(\'google\')')
+                    i.fa.fa-google-plus
+                    | &nbsp;Google
+                li.social
+                  a.linkedin(href='#' ng-click='authenticate(\'linkin\')')
+                    i.fa.fa-linkedin-square
+                    | &nbsp;LinkedIn
+                li.social
+                  a.twitter(href='#' ng-click='authenticate(\'twitter\')')
+                    i.fa.fa-twitter
+                    | &nbsp;Twitter
+
+    ui-view
+
+    include ./modal
+
+    script(src='/jquery/dist/jquery.min.js' type='text/javascript')
+    script(src='/bootstrap/dist/js/bootstrap.min.js' type='text/javascript')
+    script(src='/satellizer/satellizer.min.js', type='text/javascript')
+    script(src='/js/main.js' type='text/javascript')
+    script(src='/js/navbar.js' type='text/javascript')
