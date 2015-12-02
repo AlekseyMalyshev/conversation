@@ -1,4 +1,4 @@
-# Super Message Board
+# Super Conversation
 
 - Just basic functionality, no more fancy stuff, sorry
 
@@ -14,4 +14,4 @@ then `node server.js`
 
 ## Link to Heroku
 
-https://morning-scrubland-5248.herokuapp.com
+https://sleepy-cove-4393.herokuapp.com

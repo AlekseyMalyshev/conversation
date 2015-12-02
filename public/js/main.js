@@ -25,7 +25,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       });
 
   $authProvider.facebook({
-    clientId: 'Facebook App ID'
+    clientId: '924337914326712'
   });
 
   $authProvider.google({
