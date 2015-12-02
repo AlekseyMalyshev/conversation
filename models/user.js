@@ -3,7 +3,7 @@
 
 let mongoose = require('mongoose');
 let bcrypt = require('bcrypt');
-let jwt = require('jwt-simple');
+let jwt = require('jsonwebtoken');
 
 let userSchema = mongoose.Schema({
     // local login
@@ -56,7 +56,7 @@ userSchema.methods.token = function() {
     name: this.firstName
   };
   let secret = process.env.JWT_SECRET;
-  let token = jwt.encode(payload, secret);
+  let token = jwt.sign(payload, secret);
 
   return token;
 }
