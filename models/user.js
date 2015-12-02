@@ -6,9 +6,16 @@ let bcrypt = require('bcrypt');
 let jwt = require('jwt-simple');
 
 let userSchema = mongoose.Schema({
-    name: {type: String, required: true},
-    pass: {type: String, required: true},
+    // local login
+    pass: String,
+    // Social networks
+    facebook: String,
+    twitter: String,
+    linkedin: String,
+    // Personal details
     email: String,
+    firstName: String,
+    lastName: String,
     address: String,
     zipcode: String,
     phone: String,
@@ -45,8 +52,8 @@ userSchema.methods.comparePass = function(pass, cb) {
 
 userSchema.methods.token = function() {
   let payload = {
-    user: this.name,
-    _id: this._id
+    _id: this._id,
+    name: this.firstName
   };
   let secret = process.env.JWT_SECRET;
   let token = jwt.encode(payload, secret);

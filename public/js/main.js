@@ -9,31 +9,38 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
   $stateProvider
       .state('default', {
         url: '/',
-        templateUrl: 'partials/default'
       })
       .state('profile', {
         url: '/profile',
-        templateUrl: 'partials/profile'
+        templateUrl: 'partials/profile',
+        controller: 'ProfCtrl'
       })
       .state('users', {
         url: '/users',
-        templateUrl: 'partials/users'
+        templateUrl: 'partials/users',
+        controller: 'UsersCtrl'
       })
       .state('conversations', {
         url: '/conversations',
-        templateUrl: 'partials/conversations'
+        templateUrl: 'partials/conversations',
+        controller: 'ConvsCtrl'
+      })
+      .state('conversation', {
+        url: '/conversation/:conversationId',
+        templateUrl: 'partials/conversation',
+        controller: 'ConvCtrl'
       });
 
   $authProvider.facebook({
     clientId: '924337914326712'
   });
 
-  $authProvider.google({
-    clientId: 'Google Client ID'
+  $authProvider.linkedin({
+    clientId: '77reigersixrfn'
   });
 
-  $authProvider.linkedin({
-    clientId: 'LinkedIn Client ID'
+  $authProvider.twitter({
+    clientId: 'T4Q5ltrRgY0svVhr56RCAbc1c'
   });
 
 });

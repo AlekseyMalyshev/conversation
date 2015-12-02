@@ -1,0 +1,19 @@
+.container(ng-init='init()')
+  table.table.table-striped.table-bordered.table-hover.contacts
+    thead
+      tr
+        th.text.name Name
+        th.text.city City
+        th.text.state State
+        th.text.state Phone #
+        th#message
+          input(type='button' class='btn btn-default btn-sm' ng-click='message()' ng-disabled='hasUsers()' value='Message')
+    tbody
+      tr(ng-repeat='user in users')
+        td.text.name
+          a(href='{{\'mailto:\' + user.email}}') {{user.firstName + ' ' + user.lastName}}
+        td.text.city {{user.city}}
+        td.text.state {{user.state}}
+        td.text.state {{user.phone}}
+        td#message
+          input(type='checkbox' ng-model='check' ng-click='addRemove(check, user)')

@@ -2,7 +2,8 @@
 
 
 angular.module('Conversation')
-  .controller('navBar', function($scope, $auth) {
+  .controller('navBar', ['$scope', '$auth', '$templateCache', '$state', '$stateParams',
+    function($scope, $auth, $templateCache, $state, $stateParams) {
 
     $scope.isAuthenticated = function() {
       return $auth.isAuthenticated();
@@ -19,9 +20,16 @@ angular.module('Conversation')
     };
 
     $scope.logout = function() {
-      $auth.logout();
-      $state.go('default');
+      $templateCache.removeAll();
+      if (!$state.current.abstract) {
+        $state.transitionTo($state.current, $stateParams, {
+          reload: true,
+          inherit: false,
+          notify: true
+        });
+        $auth.logout();
+      }
     }
 
-  });
+  }]);
 

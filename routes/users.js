@@ -1,10 +1,10 @@
 'use strict';
 
 let express = require('express');
-let jwt = require('express-jwt');
 let router = express.Router();
 
 let User = require('../models/user');
+let auth = require('../config/auth');
 
 let checkError = (err, res, user) => {
   if (err) {
@@ -16,9 +16,10 @@ let checkError = (err, res, user) => {
   }
 }
 
+// user registration
 router.post('/register', (req, res) => {
   console.log(req.body);
-  User.findOne({name: req.body.name}, (err, user) => {
+  User.findOne({username: req.body.username}, (err, user) => {
     if (err) {
       checkError(err, res);
     }
@@ -29,12 +30,13 @@ router.post('/register', (req, res) => {
       let user = new User(req.body);
       user.encryptPass((err) => {
         if (err) {
+          console.log(err);
           res.status(500).send('Encryption failed');
         }
         else {
           user.save((err, doc) => {
             if (!err) {
-              doc.pass = null;
+              doc.password = null;
             }
             checkError(err, res, doc);
           });
@@ -44,83 +46,108 @@ router.post('/register', (req, res) => {
   });
 });
 
+// User authentication
 router.post('/authenticate', (req, res) => {
-  User.findOne({name: req.body.name}, (err, user) => {
+  console.log('Authenticating', req.body.username);
+  User.findOne({username: req.body.username}, (err, doc) => {
     if (err) {
-      checkError(err, res);
+      console.error('Database error: ', err);
+      res.status(500).send();
     }
-    else if (user === null) {
-      res.status(404).send('Authentication failed');
+    else if (doc === null) {
+      console.log('User not found.');
+      res.status(401).send();
     }
     else {
-      user.comparePass(req.body.pass, (err) => {
-        if (err) {
-          res.status(404).send('Authentication failed');
+      doc.validatePass(req.body.password, (err, result) => {
+        if (err || !result) {
+          console.log('Password check failed ', err);
+          res.status(401).send();
         }
         else {
-          let token = user.token();
-          user.pass = null;
-          res.cookie('userId', user._id, { maxAge: 900000, httpOnly: true });
-          res.cookie('token', token, { maxAge: 900000, httpOnly: true });
-          res.json(user);
+          console.log('Logged in.');
+          let token = doc.token();
+          if (token) {
+            res.setHeader('X-Authenticate', token);
+            res.send();
+          }
+          else {
+            res.status(500).send();
+          }
         }
       });
     }
   });
 });
 
-router.get('/me', (req, res) => {
-  let id = req.cookies.userId;
-  console.log('id', id);
-  if (!id) {
-    res.status(401).send('Not authenticated');
-  }
-  else {
-    User.findOne({_id: id}, (err, user) => {
+// the user may request other user profiles
+router.get('/', auth.isAuth, (req, res) => {
+  let id = req.userId;
+  User.find({_id: {$ne: id}}, (err, user) => {
+    if (err) {
+      checkError(err, res);
+    }
+    else if (!user) {
+      res.status(401).send('Authentication error');
+    } 
+    else {
+      user.password = null;
+      res.json(user);
+    }
+  });
+});
+
+// the user may request their details
+router.get('/me', auth.isAuth, (req, res) => {
+  let id = req.userId;
+  User.findOne({_id: id}, (err, user) => {
+    if (err) {
+      checkError(err, res);
+    }
+    else if (!user) {
+      res.status(401).send('Authentication error');
+    } 
+    else {
+      user.password = null;
+      res.json(user);
+    }
+  });
+});
+
+// the user may update their record
+router.put('/me', auth.isAuth, (req, res) => {
+  let user = new User(req.body);
+  user._id = req.userId;
+  console.log(user);
+  if (!user.pass) {
+    User.findOneAndUpdate({_id: req.userId}, user, {new: true}, (err, doc) => {
       if (err) {
         checkError(err, res);
       }
-      else if (!user) {
-        res.status(401).send('Not authenticated');
-      } 
       else {
-        res.json(user);
+        doc.password = null;
+        res.json(doc);
       }
     });
   }
-});
-
-router.put('/me', (req, res) => {
-  let id = req.cookies.userId;
-  console.log('id', id);
-  if (!id) {
-    res.send('');
-  }
   else {
-    let user = new User(req.body);
-    user._id = id;
-    console.log(user);
     user.encryptPass((err) => {
       if (err) {
         checkError(err, res);
       }
       else {
-        User.findOneAndUpdate({_id: id}, user, (err, doc) => {
+        User.findOneAndUpdate({_id: req.userId}, user, {new: true}, (err, doc) => {
           if (err) {
             checkError(err, res);
           }
           else {
-            res.json('');
+            doc.password = null;
+            res.json(doc);
           }
         });
       }
     });
   }
-});
-
-router.post('/logout', (req, res) => {
-  res.clearCookie('userId');
-  res.send('');
 });
 
 module.exports = router;

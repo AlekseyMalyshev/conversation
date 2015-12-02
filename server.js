@@ -4,16 +4,19 @@
 let express = require('express');
 let morgan = require('morgan');
 let bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser')
 var mongoose = require('mongoose');
 
-let messageApi = require('./routes/messages');
+let conversationApi = require('./routes/conversations');
 let userApi = require('./routes/users');
 
-let auth = require('./routes/auth');
+let facebook = require('./routes/auth/facebook');
+let twitter = require('./routes/auth/twitter');
+let linkedin = require('./routes/auth/linkedin');
 
 let index = require('./routes/index');
 let partials = require('./routes/partials');
+
+let auth = require('./config/auth');
 
 let database = process.env.MONGOLAB_URI || 'mongodb://localhost/conversations';
 console.log('Connecting to mongodb: ', database);
@@ -27,15 +30,17 @@ app.use(express.static('bower_components'));
 app.use(morgan('combined'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(cookieParser());
+app.use(auth.auth);
 
-app.use('/api/messages', messageApi);
+app.use('/api/conversations', auth.isAuth, conversationApi);
 app.use('/api/users', userApi);
 
-app.use('/auth', auth);
+app.use('/auth/facebook', facebook);
+app.use('/auth/twitter', twitter);
+app.use('/auth/linkedin', linkedin);
 
 app.use('/', index);
-app.use('/partials', partials);
+app.use('/partials', auth.isAuth, partials);
 
 let port = process.env.PORT || 3000;
 let listener = app.listen(port);

@@ -27,7 +27,7 @@ html(lang='en' ng-app='Conversation')
               a(ui-sref='conversations') Conversations
           ul.nav.navbar-nav.navbar-right
             li
-              a(ui-sref='logout' ng-show="isAuthenticated()" ng-click="logout()") Logout
+              a(ui-sref='default' ng-show="isAuthenticated()" ng-click="logout()") Logout
             li.dropdown
               a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false' ng-hide="isAuthenticated()")
                 | Sign in with 
@@ -38,11 +38,7 @@ html(lang='en' ng-app='Conversation')
                     i.fa.fa-facebook
                     | &nbsp;Facebook
                 li.social
-                  a.google(href='#' ng-click='authenticate(\'google\')')
-                    i.fa.fa-google-plus
-                    | &nbsp;Google
-                li.social
-                  a.linkedin(href='#' ng-click='authenticate(\'linkin\')')
+                  a.linkedin(href='#' ng-click='authenticate(\'linkedin\')')
                     i.fa.fa-linkedin-square
                     | &nbsp;LinkedIn
                 li.social
@@ -59,3 +55,7 @@ html(lang='en' ng-app='Conversation')
     script(src='/satellizer/satellizer.min.js', type='text/javascript')
     script(src='/js/main.js' type='text/javascript')
     script(src='/js/navbar.js' type='text/javascript')
+    script(src='/js/profile.js' type='text/javascript')
+    script(src='/js/users.js' type='text/javascript')
+    script(src='/js/conversation.js' type='text/javascript')
+    script(src='/js/conversations.js' type='text/javascript')

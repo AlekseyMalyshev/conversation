@@ -38,3 +38,81 @@ li.social>a.twitter:hover,
 a.twitter {
   background-color: #00ACF6;
 }
+
+div.avatar {
+  text-align: center;
+}
+
+div.avatar img {
+  max-width: 200px;
+}
+
+th.name {
+  width: 30%;
+}
+
+th.city {
+  width: 25%
+}
+
+th.state {
+  width: 20%
+}
+
+th.phone {
+  width: 25%
+}
+
+th#message {
+  width: 0;
+  padding: 0;
+  vertical-align: middle;
+}
+
+th#message>input {
+  margin: 0;
+}
+
+
+td#message {
+  text-align: center;
+}
+
+div.message-board {
+  padding: 20px;
+  background-color: #eeeeee;
+  border-radius: 5px;
+}
+
+div.participants {
+  padding: 0;
+}
+
+div.messages {
+  padding: 10px;
+}
+
+div.message {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #ffffff;
+}
+
+span.name {
+  font-weight: bold;
+  font-style: italic;
+}
+
+tr.clickable {
+  cursor: pointer;
+}
+
+th.participants {
+  width: 30%;
+}
+
+th.message {
+  width: 70%;
+}

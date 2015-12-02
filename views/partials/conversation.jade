@@ -1,0 +1,17 @@
+.container(ng-init='init()')
+  .row
+    .message-board
+      .participants
+        span.names(ng-repeat='participant in conversation.participants')
+          a(href='{{\'mailto:\' + participant.email}}') {{participant.firstName + ' ' + participant.lastName}} 
+      .messages
+        .message(ng-repeat='message in conversation.messages')
+          span.name {{message.name}}: 
+          | {{message.text}}
+
+      form(role='form', ng-submit='submit(conversation._id, message)')
+        fieldset
+          .form-group
+            textarea.form-control(rows="5", ng-model='message', required, autofocus)
+          .form-group
+            input.btn.btn-md.btn-primary.pull-right(type='submit' value='Send')
