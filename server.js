@@ -10,6 +10,8 @@ var mongoose = require('mongoose');
 let messageApi = require('./routes/messages');
 let userApi = require('./routes/users');
 
+let auth = require('./routes/auth');
+
 let index = require('./routes/index');
 let partials = require('./routes/partials');
 
@@ -29,6 +31,8 @@ app.use(cookieParser());
 
 app.use('/api/messages', messageApi);
 app.use('/api/users', userApi);
+
+app.use('/auth', auth);
 
 app.use('/', index);
 app.use('/partials', partials);
