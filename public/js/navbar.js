@@ -2,11 +2,26 @@
 
 
 angular.module('Conversation')
-.controller('navBar', function($scope, $auth) {
+  .controller('navBar', function($scope, $auth) {
 
-  $scope.authenticate = function(provider) {
-    $auth.authenticate(provider);
-  };
+    $scope.isAuthenticated = function() {
+      return $auth.isAuthenticated();
+    };
 
-});
+    $scope.authenticate = function(provider) {
+      $auth.authenticate(provider)
+        .then(function(response) {
+          console.log('signed with ' + provider, response);
+        })
+        .catch(function(err) {
+          console.log('auth error: ', err)
+        });
+    };
+
+    $scope.logout = function() {
+      $auth.logout();
+      $state.go('default');
+    }
+
+  });
 
